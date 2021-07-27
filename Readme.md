@@ -8,14 +8,14 @@ With resources from a severside weather API, this project should show us the acc
 
 ## Table of Content
 
-1. [Project Description](https://github.com/Brondchux/hw5-work-day-scheduler#project-description)
-2. [Author Info](https://github.com/Brondchux/hw5-work-day-scheduler#author-info)
-3. [User Story](https://github.com/Brondchux/hw5-work-day-scheduler#user-story)
-4. [Acceptance Criteria](https://github.com/Brondchux/hw5-work-day-scheduler#acceptance-criteria)
-5. [Mock-Up Preview](https://github.com/Brondchux/hw5-work-day-scheduler#mock-up-preview)
-6. [Useful Links](https://github.com/Brondchux/hw5-work-day-scheduler#useful-links)
-7. [Credits](https://github.com/Brondchux/hw5-work-day-scheduler#credits)
-8. [Licence](https://github.com/Brondchux/hw5-work-day-scheduler#licence)
+1. [Project Description](https://github.com/Brondchux/hw6-weather-dashboard#project-description)
+2. [Author Info](https://github.com/Brondchux/hw6-weather-dashboard#author-info)
+3. [User Story](https://github.com/Brondchux/hw6-weather-dashboard#user-story)
+4. [Acceptance Criteria](https://github.com/Brondchux/hw6-weather-dashboard#acceptance-criteria)
+5. [Mock-Up Preview](https://github.com/Brondchux/hw6-weather-dashboard#mock-up-preview)
+6. [Useful Links](https://github.com/Brondchux/hw6-weather-dashboard#useful-links)
+7. [Credits](https://github.com/Brondchux/hw6-weather-dashboard#credits)
+8. [Licence](https://github.com/Brondchux/hw6-weather-dashboard#licence)
 
 ---
 
@@ -67,8 +67,8 @@ The following image shows the web application's appearance and functionality:
 
 ## Useful Links
 
-1. 🗂 [Click me to view github repository for this project](https://github.com/Brondchux/hw5-work-day-scheduler/)
-2. 🌍 [Click me to view deployed application on github pages](https://brondchux.github.io/hw5-work-day-scheduler/)
+1. 🗂 [Click me to view github repository for this project](https://github.com/Brondchux/hw6-weather-dashboard/)
+2. 🌍 [Click me to view deployed application on github pages](https://brondchux.github.io/hw6-weather-dashboard/)
 
 ---
 
