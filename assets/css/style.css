@@ -1,3 +1,8 @@
+::selection {
+	background-color: purple;
+	color: white;
+}
+
 header {
 	display: flex;
 	min-height: 10vh;
@@ -13,6 +18,7 @@ header h1 {
 
 main {
 	min-height: 80vh;
+	overflow-y: scroll;
 }
 
 footer {
@@ -25,4 +31,14 @@ footer {
 
 footer p {
 	margin: auto;
+}
+
+/* Bootstrap Overrides */
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus {
+	background-color: purple;
+	color: white;
+	border: none;
 }
