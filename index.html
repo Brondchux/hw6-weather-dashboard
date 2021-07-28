@@ -30,32 +30,34 @@
 						<h2>Search for a city</h2>
 						<input
 							type="text"
-							class="form-control my-3"
+							class="form-control my-2"
+							id="search-city"
 							placeholder="New York"
 						/>
-						<button class="btn btn-primary form-control">Search</button>
+						<div class="text-center">
+							<span id="alert-messages" class="my-5"></span>
+						</div>
+						<button
+							class="btn btn-primary form-control mt-2"
+							id="search-button"
+						>
+							Search
+						</button>
 						<hr />
-						<button class="btn btn-secondary form-control mt-2">Chicago</button>
-						<button class="btn btn-secondary form-control mt-2">Indiana</button>
-						<button class="btn btn-secondary form-control mt-2">
-							Connecticut
-						</button>
-						<button class="btn btn-secondary form-control mt-2">Idaho</button>
-						<button class="btn btn-secondary form-control mt-2">
-							California
-						</button>
-						<button class="btn btn-secondary form-control mt-2">Texas</button>
+						<!-- dynamically append city buttons -->
+						<div id="city-buttons"></div>
 					</div>
 				</aside>
 				<section class="col-md-10 col-sm-9 col-12">
 					<div class="row">
 						<div class="col-12">
-							<div class="card p-3">
-								<h2>New York (7/27/21)</h2>
+							<div class="card p-3" id="main-weather">
+								<!-- dynamically main city weather -->
+								<!-- <h2>New York (7/27/21)</h2>
 								<p>Temp: 74.01 F</p>
 								<p>Wind: 6.01 MPH</p>
 								<p>Humidity: 46%</p>
-								<p>UV Index: <span class="badge badge-success">0.47</span></p>
+								<p>UV Index: <span class="badge badge-success">0.47</span></p> -->
 							</div>
 						</div>
 					</div>
@@ -120,7 +122,13 @@
 			<p>&copy; 2021 Gospel Chukwu's Weather Dashboard</p>
 		</footer>
 
-		<!-- JavaScript Connection -->
+		<!-- JavaScript Connections -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+		<script
+			src="https://code.jquery.com/jquery-3.6.0.min.js"
+			integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+			crossorigin="anonymous"
+		></script>
 		<script src="assets/js/script.js"></script>
 	</body>
 </html>
