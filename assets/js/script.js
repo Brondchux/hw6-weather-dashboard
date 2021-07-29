@@ -2,6 +2,7 @@
 
 // DEPENDENCIES (DOM Elements) =============================
 let mainWeather = $("#main-weather");
+let weatherForecast = $("#weather-forecast");
 let searchButton = $("#search-button");
 let searchCity = $("#search-city");
 let alertMessages = $("#alert-messages");
@@ -69,6 +70,35 @@ function displayMainWeather(weatherObj) {
 	mainWeather.append(pElUV);
 }
 
+// Card collections of 5 days weather forecast
+function miniWeatherCard(forecastObj) {
+	// Create
+	let miniColEl = $("<div class='col mb-2'>");
+	let miniCardEl = $("<div class='card bg-dark text-white'>");
+	let miniCardHeaderEl = $("<div class='card-header'>");
+	let miniCardH5El = $("<h5>"); // .text() here
+	let miniCardBodyEl = $("<div class='card-body'>");
+	let miniCardPTempEl = $("<p>"); // .text() here
+	let miniCardPWindEl = $("<p>"); // .text() here
+	let miniCardPHumidityEl = $("<p>"); // .text() here
+
+	// Build
+	miniCardH5El.text(`${forecastObj.date}`);
+	miniCardPTempEl.text(`Temp: ${forecastObj.temp}`);
+	miniCardPWindEl.text(`Wind: ${forecastObj.wind}`);
+	miniCardPHumidityEl.text(`Humidity: ${forecastObj.humidity}`);
+
+	// Place
+	miniCardHeaderEl.append(miniCardH5El);
+	miniCardBodyEl.append(miniCardPTempEl);
+	miniCardBodyEl.append(miniCardPWindEl);
+	miniCardBodyEl.append(miniCardPHumidityEl);
+	miniCardEl.append(miniCardHeaderEl);
+	miniCardEl.append(miniCardBodyEl);
+	miniColEl.append(miniCardEl);
+	weatherForecast.append(miniColEl);
+}
+
 // Display saved cites
 function listSavedCities() {
 	let cities = fetchStoredCities() ? fetchStoredCities() : [];
@@ -113,35 +143,53 @@ function fetchStoredCities() {
 
 // Fetch base city weather details
 function fetchCityWeather(cityName) {
-	// // Test data to save api calls
-	// console.log("Weather details fetched for ", cityName);
+	// Test data to save api calls
+	console.log("Weather details fetched for ", cityName);
+	let weatherObj = {
+		country: "Country",
+		city: "City",
+		temp: "Temp",
+		wind: "Wind",
+		humidity: "Humidity",
+	};
+	displayMainWeather(weatherObj);
+	daysWeatherForecast(cityName);
+	return;
+	// End of test data to save api calls
 
-	// let weatherObj = {
-	// 	country: "Country",
-	// 	city: "City",
-	// 	temp: "Temp",
-	// 	wind: "Wind",
-	// 	humidity: "Humidity",
-	// };
-	// return weatherObj;
+	// // Real data to use api calls
+	// let requestUrl = `${baseUrl}q=${cityName}&appid=${apiKey}`;
+	// fetch(requestUrl)
+	// 	.then(function (response) {
+	// 		return response.json();
+	// 	})
+	// 	.then(function (data) {
+	// 		let weatherObj = {
+	// 			country: data && data.sys ? data.sys.country : "Country",
+	// 			city: data && data.name ? data.name : "No City",
+	// 			temp: data && data.main ? data.main.temp : "Temp",
+	// 			wind: data && data.wind ? data.wind.speed : "Speed",
+	// 			humidity: data && data.main ? data.main.humidity : "Humidity",
+	// 		};
+	// 		// Display the result on DOM
+	// 		displayMainWeather(weatherObj);
+	// 	});
+}
 
-	// Real data to use api calls
-	let requestUrl = `${baseUrl}q=${cityName}&appid=${apiKey}`;
-	fetch(requestUrl)
-		.then(function (response) {
-			return response.json();
-		})
-		.then(function (data) {
-			let weatherObj = {
-				country: data && data.sys ? data.sys.country : "Country",
-				city: data && data.name ? data.name : "No City",
-				temp: data && data.main ? data.main.temp : "Temp",
-				wind: data && data.wind ? data.wind.speed : "Speed",
-				humidity: data && data.main ? data.main.humidity : "Humidity",
-			};
-			// Display the result on DOM
-			displayMainWeather(weatherObj);
-		});
+// Fetch 5 days weather forecast
+function daysWeatherForecast(theCityName) {
+	// Clear out the previous content of weather forecast
+	weatherForecast.html("");
+	console.log("daysWeatherForecast:", theCityName);
+	for (let i = 0; i < 5; i++) {
+		let forecastObj = {
+			date: i,
+			temp: i,
+			wind: i,
+			humidity: i,
+		};
+		miniWeatherCard(forecastObj);
+	}
 }
 
 // Display todays date
@@ -151,7 +199,6 @@ function todaysDate() {
 }
 
 // INITIALIZATION ==========================================
-// displayMainWeather(fetchCityWeather(baseCity));
 fetchCityWeather(baseCity);
 searchButton.on("click", initApp);
 listSavedCities();
