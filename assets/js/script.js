@@ -41,6 +41,9 @@ function initApp() {
 function displayMainWeather(weatherObj) {
 	if (!weatherObj) return;
 
+	// Empty the mainWeather div content
+	mainWeather.html("");
+
 	// Create
 	let h2El = $("<h2>");
 	let pElTemp = $("<p>");
@@ -50,9 +53,7 @@ function displayMainWeather(weatherObj) {
 	let uvSpan = $("<span class='badge badge-success'>");
 
 	// Build
-	h2El.text(
-		`${weatherObj.city}, ${weatherObj.country.toUpperCase()} (${todaysDate()})`
-	);
+	h2El.text(`${weatherObj.city}, ${weatherObj.country} (${todaysDate()})`);
 	pElTemp.text(`Temp: ${weatherObj.temp}`);
 	pElWind.text(`Wind: ${weatherObj.wind}`);
 	pElHumidity.text(`Humidity: ${weatherObj.humidity}`);
@@ -112,17 +113,17 @@ function fetchStoredCities() {
 
 // Fetch base city weather details
 function fetchCityWeather(cityName) {
-	// Test data to save api calls
-	console.log("Weather details fetched for ", cityName);
+	// // Test data to save api calls
+	// console.log("Weather details fetched for ", cityName);
 
-	let weatherObj = {
-		country: "Country",
-		city: "City",
-		temp: "Temp",
-		wind: "Wind",
-		humidity: "Humidity",
-	};
-	return weatherObj;
+	// let weatherObj = {
+	// 	country: "Country",
+	// 	city: "City",
+	// 	temp: "Temp",
+	// 	wind: "Wind",
+	// 	humidity: "Humidity",
+	// };
+	// return weatherObj;
 
 	// Real data to use api calls
 	let requestUrl = `${baseUrl}q=${cityName}&appid=${apiKey}`;
@@ -132,13 +133,14 @@ function fetchCityWeather(cityName) {
 		})
 		.then(function (data) {
 			let weatherObj = {
-				country: data.sys.country,
-				city: data.name,
-				temp: data.main.temp,
-				wind: data.wind.speed,
-				humidity: data.main.humidity,
+				country: data && data.sys ? data.sys.country : "Country",
+				city: data && data.name ? data.name : "No City",
+				temp: data && data.main ? data.main.temp : "Temp",
+				wind: data && data.wind ? data.wind.speed : "Speed",
+				humidity: data && data.main ? data.main.humidity : "Humidity",
 			};
-			console.log(data);
+			// Display the result on DOM
+			displayMainWeather(weatherObj);
 		});
 }
 
@@ -149,6 +151,7 @@ function todaysDate() {
 }
 
 // INITIALIZATION ==========================================
-displayMainWeather(fetchCityWeather(baseCity));
+// displayMainWeather(fetchCityWeather(baseCity));
+fetchCityWeather(baseCity);
 searchButton.on("click", initApp);
 listSavedCities();
