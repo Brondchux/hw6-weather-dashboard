@@ -10,10 +10,11 @@ let cityButtons = $("#city-buttons");
 
 // DATA ====================================================
 let apiKey = "1517cd55cab8c75d16cd1fade8e7890d"; // Not secured
-let baseUrl = "https://api.openweathermap.org/data/2.5/weather?";
+let baseUrl = "https://api.openweathermap.org/data/2.5/";
 let baseCity = "new york";
 let localStorageName = "lookedUpCities";
 let cityNamesArr = [];
+let today = Date.now();
 
 // FUNCTIONS ===============================================
 // Primary function to run the app
@@ -54,7 +55,9 @@ function displayMainWeather(weatherObj) {
 	let uvSpan = $("<span class='badge badge-success'>");
 
 	// Build
-	h2El.text(`${weatherObj.city}, ${weatherObj.country} (${todaysDate()})`);
+	h2El.text(
+		`${weatherObj.city}, ${weatherObj.country} (${setDateFormat(today)})`
+	);
 	pElTemp.text(`Temp: ${weatherObj.temp}`);
 	pElWind.text(`Wind: ${weatherObj.wind}`);
 	pElHumidity.text(`Humidity: ${weatherObj.humidity}`);
@@ -158,7 +161,7 @@ function fetchCityWeather(cityName) {
 	// End of test data to save api calls
 
 	// // Real data to use api calls
-	// let requestUrl = `${baseUrl}q=${cityName}&appid=${apiKey}`;
+	// let requestUrl = `${baseUrl}weather?q=${cityName}&appid=${apiKey}`;
 	// fetch(requestUrl)
 	// 	.then(function (response) {
 	// 		return response.json();
@@ -180,22 +183,36 @@ function fetchCityWeather(cityName) {
 function daysWeatherForecast(theCityName) {
 	// Clear out the previous content of weather forecast
 	weatherForecast.html("");
-	console.log("daysWeatherForecast:", theCityName);
-	for (let i = 0; i < 5; i++) {
-		let forecastObj = {
-			date: i + theCityName,
-			temp: i + theCityName,
-			wind: i + theCityName,
-			humidity: i + theCityName,
-		};
-		miniWeatherCard(forecastObj);
-	}
+
+	// Fetch forecast from API here
+	let requestUrl = `${baseUrl}forecast?q=${theCityName}&appid=${apiKey}`;
+	fetch(requestUrl)
+		.then(function (response) {
+			return response.json();
+		})
+		.then(function (data) {
+			let forecastArr = data && data.list ? data.list : [];
+			// Loop through forecast array results in increments of 8
+			for (let i = 1; i < forecastArr.length; i += 8) {
+				let forecast = forecastArr[i];
+				let forecastObj = {
+					date: setDateFormat(forecast.dt_txt),
+					// date: forecast.dt,
+					temp: forecast.main.temp,
+					wind: forecast.wind.speed,
+					humidity: forecast.main.humidity,
+				};
+				miniWeatherCard(forecastObj);
+			}
+
+			console.log(data.list);
+		});
 }
 
 // Display todays date
-function todaysDate() {
-	let today = Date.now();
-	return moment(today).format("MM/DD/YY");
+function setDateFormat(dateInMiliseconds) {
+	if (!dateInMiliseconds) return;
+	return moment(dateInMiliseconds).format("MM/DD/YY");
 }
 
 // INITIALIZATION ==========================================
