@@ -37,6 +37,10 @@ function initApp() {
 
 	// Clear out search city
 	searchCity.val("");
+
+	// Display the updated cities button
+	cityButtons.html("");
+	listSavedCities();
 }
 
 // Update the main weather display section
@@ -47,7 +51,7 @@ function displayMainWeather(weatherObj) {
 	mainWeather.html("");
 
 	// Create
-	let h2El = $("<h2>");
+	let h2El = $("<h2 class='mb-3'>");
 	let pElTemp = $("<p>");
 	let pElWind = $("<p>");
 	let pElHumidity = $("<p>");
@@ -58,9 +62,9 @@ function displayMainWeather(weatherObj) {
 	h2El.text(
 		`${weatherObj.city}, ${weatherObj.country} (${setDateFormat(today)})`
 	);
-	pElTemp.text(`Temp: ${weatherObj.temp}`);
-	pElWind.text(`Wind: ${weatherObj.wind}`);
-	pElHumidity.text(`Humidity: ${weatherObj.humidity}`);
+	pElTemp.text(`Temp: ${weatherObj.temp} F`);
+	pElWind.text(`Wind: ${weatherObj.wind} MPH`);
+	pElHumidity.text(`Humidity: ${weatherObj.humidity}%`);
 	pElUV.text(`UV Index: `);
 	uvSpan.text(`TBA`);
 	pElUV.append(uvSpan);
@@ -87,9 +91,9 @@ function miniWeatherCard(forecastObj) {
 
 	// Build
 	miniCardH5El.text(`${forecastObj.date}`);
-	miniCardPTempEl.text(`Temp: ${forecastObj.temp}`);
-	miniCardPWindEl.text(`Wind: ${forecastObj.wind}`);
-	miniCardPHumidityEl.text(`Humidity: ${forecastObj.humidity}`);
+	miniCardPTempEl.text(`Temp: ${forecastObj.temp} F`);
+	miniCardPWindEl.text(`Wind: ${forecastObj.wind} MPH`);
+	miniCardPHumidityEl.text(`Humidity: ${forecastObj.humidity}%`);
 
 	// Place
 	miniCardHeaderEl.append(miniCardH5El);
@@ -146,37 +150,24 @@ function fetchStoredCities() {
 
 // Fetch base city weather details
 function fetchCityWeather(cityName) {
-	// Test data to save api calls
-	console.log("Weather details fetched for ", cityName);
-	let weatherObj = {
-		country: "Country",
-		city: "City",
-		temp: "Temp",
-		wind: "Wind",
-		humidity: "Humidity",
-	};
-	displayMainWeather(weatherObj);
-	daysWeatherForecast(cityName);
-	return;
-	// End of test data to save api calls
-
-	// // Real data to use api calls
-	// let requestUrl = `${baseUrl}weather?q=${cityName}&appid=${apiKey}`;
-	// fetch(requestUrl)
-	// 	.then(function (response) {
-	// 		return response.json();
-	// 	})
-	// 	.then(function (data) {
-	// 		let weatherObj = {
-	// 			country: data && data.sys ? data.sys.country : "Country",
-	// 			city: data && data.name ? data.name : "No City",
-	// 			temp: data && data.main ? data.main.temp : "Temp",
-	// 			wind: data && data.wind ? data.wind.speed : "Speed",
-	// 			humidity: data && data.main ? data.main.humidity : "Humidity",
-	// 		};
-	// 		// Display the result on DOM
-	// 		displayMainWeather(weatherObj);
-	// 	});
+	// Real data to use api calls
+	let requestUrl = `${baseUrl}weather?q=${cityName}&appid=${apiKey}`;
+	fetch(requestUrl)
+		.then(function (response) {
+			return response.json();
+		})
+		.then(function (data) {
+			let weatherObj = {
+				country: data && data.sys ? data.sys.country : "Country",
+				city: data && data.name ? data.name : "No City",
+				temp: data && data.main ? kelvin2fahrenheit(data.main.temp) : "Temp",
+				wind: data && data.wind ? data.wind.speed : "Speed",
+				humidity: data && data.main ? data.main.humidity : "Humidity",
+			};
+			// Display the result on DOM
+			displayMainWeather(weatherObj);
+			daysWeatherForecast(cityName);
+		});
 }
 
 // Fetch 5 days weather forecast
@@ -197,15 +188,12 @@ function daysWeatherForecast(theCityName) {
 				let forecast = forecastArr[i];
 				let forecastObj = {
 					date: setDateFormat(forecast.dt_txt),
-					// date: forecast.dt,
-					temp: forecast.main.temp,
+					temp: kelvin2fahrenheit(forecast.main.temp),
 					wind: forecast.wind.speed,
 					humidity: forecast.main.humidity,
 				};
 				miniWeatherCard(forecastObj);
 			}
-
-			console.log(data.list);
 		});
 }
 
@@ -213,6 +201,11 @@ function daysWeatherForecast(theCityName) {
 function setDateFormat(dateInMiliseconds) {
 	if (!dateInMiliseconds) return;
 	return moment(dateInMiliseconds).format("MM/DD/YY");
+}
+
+// Convert kelvin to feriheit
+function kelvin2fahrenheit(theKelvinVal) {
+	return (((theKelvinVal - 273.15) * 9) / 5 + 32).toFixed(2);
 }
 
 // INITIALIZATION ==========================================
