@@ -183,10 +183,10 @@ function daysWeatherForecast(theCityName) {
 	console.log("daysWeatherForecast:", theCityName);
 	for (let i = 0; i < 5; i++) {
 		let forecastObj = {
-			date: i,
-			temp: i,
-			wind: i,
-			humidity: i,
+			date: i + theCityName,
+			temp: i + theCityName,
+			wind: i + theCityName,
+			humidity: i + theCityName,
 		};
 		miniWeatherCard(forecastObj);
 	}
